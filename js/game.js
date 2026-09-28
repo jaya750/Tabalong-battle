@@ -18,14 +18,7 @@ document.addEventListener("DOMContentLoaded", function () {
     let isAnswering = false;
 
     // STEP 8: Sound Effects (Web Audio API / Audio Elements)
-    const sounds = {
-        buzzer: new Audio('/sounds/buzzer.mp3'),
-        correct: new Audio('/sounds/correct.mp3'),
-        wrong: new Audio('/sounds/wrong.mp3'),
-        tick: new Audio('/sounds/tick.mp3'),
-        win: new Audio('/sounds/win.mp3')
-    };
-
+ 
     function playSound(name) {
         if (sounds[name]) {
             sounds[name].currentTime = 0;
