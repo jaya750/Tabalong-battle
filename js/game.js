@@ -17,15 +17,6 @@ document.addEventListener("DOMContentLoaded", function () {
     let currentActiveButton = null;
     let isAnswering = false;
 
-    // STEP 8: Sound Effects (Web Audio API / Audio Elements)
- 
-    function playSound(name) {
-        if (sounds[name]) {
-            sounds[name].currentTime = 0;
-            sounds[name].play().catch(() => {}); // Catch autoplay restrictions
-        }
-    }
-
     // DOM Elements
     const quizModal = document.getElementById('quiz-modal');
     const resultModal = document.getElementById('result-modal');
@@ -93,7 +84,7 @@ document.addEventListener("DOMContentLoaded", function () {
             })
             .then(res => {
                 if (res.status === 'success' || res.id || res.data) {
-                                const data = res.data || res;
+                    const data = res.data || res;
                     currentQuestion = data;
                     if (data.id && !usedQuestionIds.includes(data.id)) {
                         usedQuestionIds.push(data.id);
@@ -139,8 +130,6 @@ document.addEventListener("DOMContentLoaded", function () {
         if (activePlayer !== null) return;
         activePlayer = player;
         
-        playSound('buzzer'); // STEP 8: Sound effect buzzer
-        
         const playerName = player === 'P1' ? (config.player1 || 'P1') : (config.player2 || 'P2');
         activePlayerBanner.textContent = `⚡ ${playerName} BERHAK MENJAWAB!`;
         activePlayerBanner.style.color = player === 'P1' ? '#3b82f6' : '#ef4444';
@@ -185,7 +174,7 @@ document.addEventListener("DOMContentLoaded", function () {
         document.querySelectorAll('.option-btn').forEach(btn => btn.disabled = disabled);
     }
 
-    // STEP 8: Timer & Animasi
+    // Timer & Animasi
     function startTimer(isBuzzerPhase = false) {
         clearInterval(timerInterval);
         timeLeft = 15;
@@ -199,15 +188,13 @@ document.addEventListener("DOMContentLoaded", function () {
             if (timerDisplay) {
                 timerDisplay.textContent = timeLeft;
                 if (timeLeft <= 5) {
-                    timerDisplay.classList.add('warning'); // STEP 8: Animasi/Warna Timer
-                    playSound('tick');
+                    timerDisplay.classList.add('warning');
                 }
             }
 
             if (timeLeft <= 0) {
                 clearInterval(timerInterval);
                 disableAnswerButtons(true);
-                playSound('wrong');
                 
                 if (isBuzzerPhase) {
                     feedbackText.textContent = "⏱️ Tidak ada yang merebut!";
@@ -234,7 +221,7 @@ document.addEventListener("DOMContentLoaded", function () {
         }
     }
 
-    // STEP 7: Penambahan Poin & Efek Jawaban
+    // Penambahan Poin & Efek Jawaban
     function submitAnswer(selectedOption, selectedBtn) {
         if (isAnswering) return;
         isAnswering = true;
@@ -259,7 +246,6 @@ document.addEventListener("DOMContentLoaded", function () {
             const points = data.points || currentQuestion.points || 100;
 
             if (isCorrect) {
-                playSound('correct'); // STEP 8: Sound Effect
                 selectedBtn.classList.add('correct');
                 feedbackText.textContent = `✅ Benar! (+${points} Poin)`;
                 feedbackText.style.color = "#22c55e";
@@ -274,7 +260,6 @@ document.addEventListener("DOMContentLoaded", function () {
                     chooserPlayer = 'P2';
                 }
             } else {
-                playSound('wrong'); // STEP 8: Sound Effect
                 selectedBtn.classList.add('wrong');
                 feedbackText.textContent = `❌ Salah! Jawaban benar: ${data.correct_answer || '-'}`;
                 feedbackText.style.color = "#ef4444";
@@ -314,9 +299,8 @@ document.addEventListener("DOMContentLoaded", function () {
         }
     }
 
-    // STEP 7 & 8: Halaman Hasil & Save Leaderboard
+    // Halaman Hasil & Save Leaderboard
     function showWinner() {
-        playSound('win');
         const winnerText = document.getElementById('winner-text');
         const finalScoresText = document.getElementById('final-scores-text');
 
@@ -352,7 +336,7 @@ document.addEventListener("DOMContentLoaded", function () {
         if (resultModal) resultModal.classList.remove('hidden');
     }
 
-    // STEP 8: Reset / Play Again
+    // Reset / Play Again
     if (restartBtn) {
         restartBtn.addEventListener('click', function() {
             currentScore1 = 0;
